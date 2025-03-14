@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rust Meetup Luzern</title>
+    <style>
+        :root {
+            --rust-orange: #ff8c00;
+            --rust-dark: #121212;
+            --rust-light: #ffffff;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: var(--rust-dark);
+            color: var(--rust-light);
+            background-image: radial-gradient(circle at 10% 20%, rgba(255, 140, 0, 0.1) 0%, rgba(18, 18, 18, 0.3) 90%);
+        }
+        .container {
+            text-align: center;
+            padding: 2.5em;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            max-width: 800px;
+            margin: 20px;
+        }
+        .title {
+            font-size: 3.5em;
+            margin-bottom: 0.3em;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--rust-orange), #ff5500);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(255, 140, 0, 0.2);
+        }
+        .subtitle {
+            font-size: 1.5em;
+            margin-bottom: 1em;
+            color: var(--rust-orange);
+        }
+        .description {
+            font-size: 1.2em;
+            margin-bottom: 2em;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        .cta-link {
+            display: inline-block;
+            padding: 1em 2em;
+            font-size: 1em;
+            color: var(--rust-light);
+            background: var(--rust-orange);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+        }
+        .cta-link:hover {
+            background: #e07b00;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 2em;
+            flex-wrap: wrap;
+        }
+        .social-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--rust-light);
+        }
+        .social-link:hover {
+            background: rgba(255, 140, 0, 0.2);
+            transform: translateY(-3px);
+        }
+        .social-link svg, .social-link img {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+        .event-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 2em;
+            text-align: left;
+            transition: transform 0.3s ease;
+            border-left: 4px solid var(--rust-orange);
+        }
+        .event-card:hover {
+            transform: translateY(-5px);
+        }
+        .event-title {
+            font-size: 1.8em;
+            margin-bottom: 0.5em;
+            color: var(--rust-light);
+        }
+        .event-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .event-date, .event-location, .event-speaker {
+            display: flex;
+            align-items: center;
+            color: var(--rust-orange);
+            font-size: 0.9em;
+        }
+        .event-date svg, .event-location svg, .event-speaker svg {
+            margin-right: 6px;
+        }
+        .event-description {
+            margin-bottom: 20px;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        .event-attend {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--rust-orange);
+            color: var(--rust-light);
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.2);
+        }
+        .event-attend:hover {
+            background: #e07b00;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 140, 0, 0.3);
+        }
+        .host-button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: transparent;
+            border: 2px solid var(--rust-orange);
+            color: var(--rust-orange);
+            border-radius: 30px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .host-button:hover {
+            background: rgba(255, 140, 0, 0.1);
+            transform: translateY(-3px);
+        }
+        .date-display {
+            font-size: 0.9em;
+            opacity: 0.7;
+            margin-top: 2em;
+            font-style: italic;
+        }
+        .user-info {
+            font-size: 0.8em;
+            opacity: 0.6;
+            margin-top: 0.5em;
+        }
+        .rust-icon {
+            width: 30px;
+            height: 30px;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        .program {
+            text-align: left;
+            margin: 15px 0;
+        }
+        .program-item {
+            display: flex;
+            margin-bottom: 5px;
+        }
+        .program-time {
+            color: var(--rust-orange);
+            width: 80px;
+            flex-shrink: 0;
+        }
+        @media (max-width: 600px) {
+            .title {
+                font-size: 2.5em;
+            }
+            .subtitle {
+                font-size: 1.2em;
+            }
+            .description {
+                font-size: 1em;
+            }
+            .event-card {
+                padding: 15px;
+            }
+            .container {
+                padding: 1.5em;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            <svg class="rust-icon" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#FF8C00" d="M256 0a256 256 0 1 1 0 512 256 256 0 0 1 0-512zm0 91.4c-5.2 0-9.4 4.2-9.4 9.4s4.2 9.4 9.4 9.4 9.4-4.2 9.4-9.4-4.2-9.4-9.4-9.4zm-99.5 28.2c-2.6 0-5 1-6.7 2.8a9.5 9.5 0 0 0 0 13.3 9.5 9.5 0 0 0 13.3 0 9.5 9.5 0 0 0 0-13.3c-1.8-1.7-4.1-2.8-6.6-2.8zm199 0c-2.6 0-5 1-6.7 2.8a9.5 9.5 0 0 0 0 13.3 9.5 9.5 0 0 0 13.3 0 9.5 9.5 0 0 0 0-13.3c-1.8-1.7-4.1-2.8-6.6-2.8zM128.2 169c-2.6 0-5 1-6.7 2.7a9.5 9.5 0 0 0 0 13.4 9.5 9.5 0 0 0 13.3 0 9.5 9.5 0 0 0 0-13.4c-1.8-1.7-4.1-2.7-6.6-2.7zm255.6 0c-2.6 0-5 1-6.7 2.7a9.5 9.5 0 0 0 0 13.4 9.5 9.5 0 0 0 13.3 0 9.5 9.5 0 0 0 0-13.4c-1.8-1.7-4.1-2.7-6.6-2.7zM256 187.9c-37.6 0-68.1 30.5-68.1 68.1 0 37.6 30.5 68.1 68.1 68.1 37.6 0 68.1-30.5 68.1-68.1 0-37.6-30.5-68.1-68.1-68.1zM98.3 246.8c-5.2 0-9.4 4.2-9.4 9.4s4.2 9.4 9.4 9.4 9.4-4.2 9.4-9.4-4.2-9.4-9.4-9.4zm315.4 0c-5.2 0-9.4 4.2-9.4 9.4s4.2 9.4 9.4 9.4 9.4-4.2 9.4-9.4-4.2-9.4-9.4-9.4zM128.2 324.5c-2.6 0-5 1-6.7 2.8a9.5 9.5 0 0 0 0 13.3 9.5 9.5 0 0 0 13.3 0 9.5 9.5 0 0 0 0-13.3c-1.8-1.7-4.1-2.8-6.6-2.8zm255.6 0c-2.6 0-5 1-6.7 2.8a9.5 9.5 0 0 0 0 13.3 9.5 9.5 0 0 0 13.3 0 9.5 9.5 0 0 0 0-13.3c-1.8-1.7-4.1-2.8-6.6-2.8zm-199 49.9c-2.6 0-5 1-6.7 2.8a9.5 9.5 0 0 0 0 13.3 9.5 9.5 0 0 0 13.3 0 9.5 9.5 0 0 0 0-13.3c-1.8-1.7-4.1-2.8-6.6-2.8zm199 0c-2.6 0-5 1-6.7 2.8a9.5 9.5 0 0 0 0 13.3 9.5 9.5 0 0 0 13.3 0 9.5 9.5 0 0 0 0-13.3c-1.8-1.7-4.1-2.8-6.6-2.8zM256 401.3c-5.2 0-9.4 4.2-9.4 9.4s4.2 9.4 9.4 9.4 9.4-4.2 9.4-9.4-4.2-9.4-9.4-9.4z"/>
+            </svg>
+            Rust Meetup Luzern
+        </div>
+        <div class="subtitle">Programming language meetup in central Switzerland</div>
+        <div class="description">
+            A community for Rust developers in and around Luzern. We discuss systems programming, web development, embedded systems and other topics related to the Rust programming language. All skill levels welcome.
+        </div>
+        
+        <div class="event-card">
+            <div class="event-title">2025 Rust Talks Luzern #1: Making Games with Godot + Rust</div>
+            <div class="event-meta">
+                <div class="event-date">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 2V5M16 2V5M3.5 9.09H20.5M3 8.5C3 7.4 3.9 6.5 5 6.5H19C20.1 6.5 21 7.4 21 8.5V19C21 20.1 20.1 21 19 21H5C3.9 21 3 20.1 3 19V8.5Z" stroke="#ff8c00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 15C12.55 15 13 14.55 13 14C13 13.45 12.55 13 12 13C11.45 13 11 13.45 11 14C11 14.55 11.45 15 12 15Z" fill="#ff8c00"/>
+                        <path d="M17 15C17.55 15 18 14.55 18 14C18 13.45 17.55 13 17 13C16.45 13 16 13.45 16 14C16 14.55 16.45 15 17 15Z" fill="#ff8c00"/>
+                        <path d="M7 15C7.55 15 8 14.55 8 14C8 13.45 7.55 13 7 13C6.45 13 6 13.45 6 14C6 14.55 6.45 15 7 15Z" fill="#ff8c00"/>
+                    </svg>
+                    May 7, 2025 - 7:00 PM CEST
+                </div>
+                <div class="event-location">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="#ff8c00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 22C16 18 20 14.4183 20 10C20 5.58172 16.4183 2 12 2C7.58172 2 4 5.58172 4 10C4 14.4183 8 18 12 22Z" stroke="#ff8c00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Near Lucerne Train station (TBD)
+                </div>
+                <div class="event-speaker">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#ff8c00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6 21V19C6 16.7909 7.79086 15 10 15H14C16.2091 15 18 16.7909 18 19V21" stroke="#ff8c00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Speaker: Jan Haller
+                </div>
+            </div>
+            <div class="event-description">
+                Rust and Gamedev - Gamedev and open-source enthusiast Jan Haller will talk about his experiences with the rust-lang in game development. Jan is a Member of the Godot's GDExtension team + author of Rust bindings for Godot.
+            </div>
+            
+            <div class="program">
+                <div class="program-item">
+                    <div class="program-time">18:30</div>
+                    <div>Doors open</div>
+                </div>
+                <div class="program-item">
+                    <div class="program-time">19:00</div>
+                    <div>Start of the talk</div>
+                </div>
+                <div class="program-item">
+                    <div class="program-time">Afterward</div>
+                    <div>Drinks and snacks & socializing</div>
+                </div>
+                <div class="program-item">
+                    <div class="program-time">Open end</div>
+                    <div>End of event</div>
+                </div>
+            </div>
+            
+            <a href="https://www.meetup.com/rust-luzern/events/306687637/" class="event-attend">RSVP Now</a>
+        </div>
+        
+        <a href="mailto:tremble-until-crux@duck.com" class="host-button">Request to Host</a>
+        
+        <div class="social-links">
+            <a href="https://matrix.to/#/#rust-luzern:matrix.org" class="social-link">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#ffffff">
+                    <path d="M.632.55v22.9H2.28V24H0V0h2.28v.55zm7.043 7.26v1.157h.033a3.312 3.312 0 0 1 1.117-1.024c.433-.245.936-.365 1.5-.365.998 0 1.763.305 2.297.914.534.61.8 1.49.8 2.647v5.553h-1.733v-5.076c0-.75-.152-1.314-.456-1.686-.305-.372-.736-.558-1.29-.558-.662 0-1.18.285-1.552.856-.372.57-.558 1.35-.558 2.34v4.126H7.075V7.81z"/>
+                    <path d="M19.252 3.037h1.737v4.078h2.265v1.315h-2.265v4.886c0 .593.11 1.027.328 1.3.218.273.578.41 1.08.41.187 0 .36-.015.516-.043.187-.043.372-.11.554-.2v1.407c-.2.063-.44.12-.719.164-.27.053-.54.074-.83.074-.915 0-1.607-.26-2.076-.783-.47-.524-.704-1.325-.704-2.413V8.451h-2.033V7.136h2.033V3.057h.114zm3.733 18.613H21.56l.055-.437 1.365-.547v-12.96l-1.365-.547-.055-.436h4.262v14.927z"/>
+                </svg>
+                Matrix
+            </a>
+            <a href="https://www.meetup.com/rust-luzern/" class="social-link">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#ffffff">
+                    <path d="M19.24 12.03c-.23-.82.04-1.5.31-2.23l-1.13-1.23c-1.5.58-2.03-.18-2.03-.18-.39-.39-.77-1.44-.77-1.44-.55-.93-1.3-1.29-1.67-1.29h-1.31c-.44.94-1.69 3.27-3.39 4.07-1.41.66-2.37 1.5-2.37 3.57 0 1.18-1.13 1.72-1.6 2.53-.48.82 1.21 2.58 1.92 2.99.74.43 2.2.84 2.2.84.44.24.89.36 1.33.36.89 0 1.68-.37 2.25-1.08.58-.71.92-1.66.92-2.69 0-.79-.27-1.53-.74-2.2 1.38-.91 2.28.33 2.28.33.33-.71 1.94-.47 1.94-.47 1.57 1.03 4.36.74 4.36.74 1.14 3.27-2.5 4.38-2.5 4.38z"/>
+                </svg>
+                Meetup
+            </a>
+            <a href="https://github.com/maebli/rust-luzern" class="social-link">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#ffffff">
+                    <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.162 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+                </svg>
+                GitHub
+            </a>
+        </div>
+        
+    </div>
+</body>
+</html>

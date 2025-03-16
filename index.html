@@ -86,20 +86,21 @@
             display: flex;
             align-items: center;
             padding: 10px 15px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 140, 0, 0.15);
             border-radius: 50px;
             transition: all 0.3s ease;
             text-decoration: none;
-            color: var(--rust-light);
+            color: var(--rust-orange);
         }
         .social-link:hover {
-            background: rgba(255, 140, 0, 0.2);
+            background: rgba(255, 140, 0, 0.3);
             transform: translateY(-3px);
         }
         .social-link svg, .social-link img {
             width: 24px;
             height: 24px;
             margin-right: 10px;
+            fill: var(--rust-orange);
         }
         .event-card {
             background: rgba(255, 255, 255, 0.08);
@@ -224,6 +225,21 @@
             margin-bottom: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(255, 140, 0, 0.2);
+        }
+        a {
+            color: var(--rust-orange);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+            opacity: 0.9;
+        }
+        
+        .event-speaker a {
+            color: var(--rust-orange);
+            font-weight: bold;
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">

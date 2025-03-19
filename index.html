@@ -256,6 +256,105 @@
             margin-right: 10px;
             font-weight: 600;
         }
+
+        .captcha-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .captcha-content {
+            position: relative;
+            background: var(--rust-dark);
+            border: 2px solid var(--rust-orange);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+        
+        .cloudflare-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        
+        .cloudflare-logo {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+        
+        .honeypot-field {
+            position: absolute;
+            left: -9999px;
+            opacity: 0;
+        }
+        
+        .security-checks {
+            font-size: 0.8em;
+            color: #888;
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .check-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .check-icon {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: rgba(255, 140, 0, 0.2);
+            margin-right: 8px;
+            position: relative;
+        }
+        
+        .check-icon.completed:after {
+            content: "✓";
+            position: absolute;
+            color: var(--rust-orange);
+            font-size: 12px;
+            left: 3px;
+            top: -1px;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            margin-top: 15px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--rust-orange);
+            transition: width 0.3s ease;
+        }
+        
+        .captcha-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 0.7em;
+            color: #888;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
@@ -332,7 +431,7 @@
             </div>
         </div>
         
-        <a href="mailto:tremble-until-crux@duck.com" class="host-button">Request to Host</a>
+        <button class="host-button" id="hostBtn">Request to Host</button>
         
         <div class="social-links">
             <a href="https://matrix.to/#/#rust-luzern:matrix.org" class="social-link">
@@ -357,5 +456,205 @@
         </div>
         
     </div>
+    
+    <!-- Enhanced Cloudflare-like Modal -->
+    <div class="captcha-modal" id="captchaModal">
+        <div class="captcha-content">
+            <div class="cloudflare-header">
+                <svg class="cloudflare-logo" viewBox="0 0 48 48" fill="#ff8c00">
+                    <path d="M33.5,21.4h-1.9c-0.1,0-0.2,0.1-0.3,0.2l-0.8,4.9c0,0.1,0.1,0.2,0.2,0.2h2c0.1,0,0.2-0.1,0.3-0.2l0.8-4.9 C33.8,21.5,33.7,21.4,33.5,21.4z"/>
+                    <path d="M27.3,21.4h-1.9c-0.1,0-0.2,0.1-0.3,0.2l-0.8,4.9c0,0.1,0.1,0.2,0.2,0.2h2c0.1,0,0.2-0.1,0.3-0.2l0.8-4.9 C27.6,21.5,27.5,21.4,27.3,21.4z"/>
+                    <path d="M42.3,20.5h-2.2c-0.2,0-0.4,0.1-0.4,0.3l-0.2,1.1h-2.3c-1.2,0-2.3,0.9-2.6,2.1l-0.5,3.1c-0.2,1.2,0.6,2.1,1.8,2.1h6.3 c0.2,0,0.4-0.1,0.4-0.3l0.2-1.1h-5.9c-0.6,0-0.9-0.4-0.8-0.9l0,0c0.1-0.5,0.5-0.9,1.1-0.9H42c0.2,0,0.4-0.1,0.4-0.3l0.4-2.1 c0.2-1.2-0.6-2.1-1.8-2.1h-1.8c-0.2,0-0.3,0.1-0.3,0.3l-0.1,0.7h1.6c0.3,0,0.4,0.2,0.4,0.4l-0.1,0.3h-2.4c-0.3,0-0.5,0.2-0.6,0.4 l-0.4,2.2c-0.1,0.3,0.1,0.4,0.4,0.4h4.5l0.8-4.6C43.2,21.4,42.9,20.5,42.3,20.5z"/>
+                    <path d="M28.9,33.3H15.2c-0.7,0-1.3-0.3-1.8-0.8c-0.5-0.4-0.7-1-0.7-1.6c0-0.8,0.4-1.5,1.1-2.1c-0.4-0.6-0.5-1.4-0.2-2.2 c0.3-0.7,0.9-1.3,1.7-1.5c0-0.8,0.3-1.6,0.9-2.2c0.6-0.7,1.5-1,2.5-1c1,0,1.9,0.4,2.6,1c0.5-0.3,1.1-0.4,1.7-0.3 c0.6,0.1,1.1,0.3,1.5,0.7c0.3,0.3,0.5,0.6,0.7,1c0.2-0.2,0.4-0.3,0.6-0.4C26.2,23.5,26.9,23,28,23c0.8,0,1.6,0.3,2.2,0.8 c0.6,0.5,1,1.2,1.1,2c0.9,0.1,1.7,0.6,2.2,1.3c0.5,0.7,0.7,1.6,0.6,2.5c-0.2,1.8-1.7,3.3-3.5,3.5C30.2,33.2,29.5,33.3,28.9,33.3z"/>
+                </svg>
+                <span>Security Check</span>
+            </div>
+            
+            <div class="captcha-title">Please complete the security check</div>
+            
+            <!-- Honeypot field - invisible to humans, but bots might fill it -->
+            <input type="text" name="website" class="honeypot-field" tabindex="-1" autocomplete="off">
+            
+            <div id="securityChecks" class="security-checks">
+                <div class="check-item">
+                    <span class="check-icon" id="browserCheck"></span>
+                    <span>Checking browser information</span>
+                </div>
+                <div class="check-item">
+                    <span class="check-icon" id="botCheck"></span>
+                    <span>Detecting automated requests</span>
+                </div>
+                <div class="check-item">
+                    <span class="check-icon" id="challengeCheck"></span>
+                    <span>Challenge verification</span>
+                </div>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+            
+            <div style="margin-top: 25px; display: none;" id="captchaChallenge">
+                <div class="captcha-question" id="captchaQuestion"></div>
+                <input type="number" class="captcha-input" id="captchaAnswer" placeholder="?">
+                <button class="captcha-button" id="submitCaptcha">Verify</button>
+            </div>
+            
+            <div class="captcha-footer">
+                <span>Protected by RustShield</span>
+                <span id="requestID">Request ID: RSH_<span id="randomID"></span></span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hostBtn = document.getElementById('hostBtn');
+            const captchaModal = document.getElementById('captchaModal');
+            const captchaQuestion = document.getElementById('captchaQuestion');
+            const captchaAnswer = document.getElementById('captchaAnswer');
+            const submitCaptcha = document.getElementById('submitCaptcha');
+            const captchaChallenge = document.getElementById('captchaChallenge');
+            const browserCheck = document.getElementById('browserCheck');
+            const botCheck = document.getElementById('botCheck');
+            const challengeCheck = document.getElementById('challengeCheck');
+            const progressBar = document.getElementById('progressBar');
+            const randomID = document.getElementById('randomID');
+            
+            // Generate random request ID
+            randomID.textContent = Math.random().toString(36).substring(2, 10).toUpperCase();
+            
+            // Generate more complex math question
+            function generateMathQuestion() {
+                const operations = ['+', '-', '*'];
+                const op = operations[Math.floor(Math.random() * 2)]; // Only use + or - for simplicity
+                
+                let num1, num2, answer;
+                
+                if (op === '+') {
+                    num1 = Math.floor(Math.random() * 20) + 1;
+                    num2 = Math.floor(Math.random() * 20) + 1;
+                    answer = num1 + num2;
+                    captchaQuestion.textContent = `What is ${num1} + ${num2}?`;
+                } else if (op === '-') {
+                    num1 = Math.floor(Math.random() * 20) + 10;
+                    num2 = Math.floor(Math.random() * 9) + 1;
+                    answer = num1 - num2;
+                    captchaQuestion.textContent = `What is ${num1} - ${num2}?`;
+                } else {
+                    num1 = Math.floor(Math.random() * 9) + 1;
+                    num2 = Math.floor(Math.random() * 9) + 1;
+                    answer = num1 * num2;
+                    captchaQuestion.textContent = `What is ${num1} × ${num2}?`;
+                }
+                
+                return answer;
+            }
+            
+            let correctAnswer;
+            let startTime;
+            
+            function runSecurityChecks() {
+                // Simulate browser check
+                setTimeout(() => {
+                    browserCheck.classList.add('completed');
+                    progressBar.style.width = '33%';
+                    
+                    // Simulate bot detection
+                    setTimeout(() => {
+                        botCheck.classList.add('completed');
+                        progressBar.style.width = '66%';
+                        
+                        // Show challenge
+                        setTimeout(() => {
+                            captchaChallenge.style.display = 'block';
+                            correctAnswer = generateMathQuestion();
+                            captchaAnswer.focus();
+                            startTime = new Date().getTime();
+                        }, 700);
+                    }, 800);
+                }, 600);
+            }
+            
+            hostBtn.addEventListener('click', function() {
+                captchaModal.style.display = 'flex';
+                // Reset progress
+                browserCheck.classList.remove('completed');
+                botCheck.classList.remove('completed');
+                challengeCheck.classList.remove('completed');
+                progressBar.style.width = '0%';
+                captchaChallenge.style.display = 'none';
+                
+                // Start security checks
+                runSecurityChecks();
+            });
+            
+            // Email obfuscation
+            const emailParts = [
+                't', 'r', 'e', 'm', 'b', 'l', 'e', '-', 
+                'u', 'n', 't', 'i', 'l', '-',
+                'c', 'r', 'u', 'x'
+            ];
+            const domainParts = [
+                'd', 'u', 'c', 'k', '.', 'c', 'o', 'm'
+            ];
+            
+            function assembleEmail() {
+                return emailParts.join('') + '@' + domainParts.join('');
+            }
+            
+            submitCaptcha.addEventListener('click', function() {
+                const endTime = new Date().getTime();
+                const honeypotValue = document.querySelector('.honeypot-field').value;
+                const timeElapsed = endTime - startTime;
+                
+                // Check if:
+                // 1. Answer is correct
+                // 2. Honeypot is empty (bots often fill these)
+                // 3. Time to solve is reasonable (not too fast which might indicate automation)
+                if (parseInt(captchaAnswer.value) === correctAnswer && 
+                    honeypotValue === '' && 
+                    timeElapsed > 1500) {
+                    
+                    challengeCheck.classList.add('completed');
+                    progressBar.style.width = '100%';
+                    
+                    setTimeout(() => {
+                        captchaModal.style.display = 'none';
+                        // Assemble email only after verification is complete
+                        window.location.href = 'mailto:' + assembleEmail();
+                    }, 700);
+                } else {
+                    // If failed any check, reset and try again
+                    captchaAnswer.value = '';
+                    captchaAnswer.placeholder = 'Try again';
+                    correctAnswer = generateMathQuestion();
+                    startTime = new Date().getTime();
+                }
+            });
+            
+            captchaAnswer.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    submitCaptcha.click();
+                }
+            });
+            
+            // Close modal when clicking outside
+            captchaModal.addEventListener('click', function(event) {
+                if (event.target === captchaModal) {
+                    captchaModal.style.display = 'none';
+                }
+            });
+            
+            // Add a fingerprinting-like behavior
+            const fpData = {
+                screen: `${window.screen.width}x${window.screen.height}`,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                language: navigator.language,
+                platform: navigator.platform
+            };
+            console.log('Security scan data:', fpData);
+        });
+    </script>
 </body>
 </html>

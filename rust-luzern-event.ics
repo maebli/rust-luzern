@@ -14,7 +14,7 @@ DESCRIPTION:Two exciting talks covering inverse and forward kinematics for six-a
 LOCATION:Noser Engineering AG\, D4 Pk. 4\, 6039 Root
 URL:https://www.meetup.com/rust-luzern/
 STATUS:CONFIRMED
-ORGANIZER;CN=Rust Luzern:mailto:rust-luzern@meetup.com
+ORGANIZER;CN=Rust Luzern
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Reminder for Rust Luzern Meetup

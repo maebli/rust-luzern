@@ -29,7 +29,7 @@ function downloadICS({ edition, year, title, startISO, endISO, location, descrip
 
 const mapsUrl = q => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
 
-const EventCard = ({ edition, year, title, date, time, location, host, hostUrl, talks, status = 'past', description, startISO, endISO, program, rsvpUrl }) => {
+const EventCard = ({ edition, year, title, date, time, location, host, hostUrl, talks, status = 'past', description, startISO, endISO, program, rsvpUrl, isMobile }) => {
   const isUpcoming = status === 'upcoming';
   const [hover, setHover] = React.useState(false);
   return (
@@ -40,19 +40,27 @@ const EventCard = ({ edition, year, title, date, time, location, host, hostUrl, 
         background: 'var(--surface)',
         border: `1px solid ${isUpcoming ? 'var(--rust-400)' : (hover ? 'var(--border-strong)' : 'var(--border)')}`,
         borderRadius: 'var(--radius-md)',
-        padding: '28px 32px',
+        padding: isMobile ? '20px 16px' : '28px 32px',
         transition: 'border-color 140ms var(--ease-out)',
         boxShadow: isUpcoming ? 'var(--shadow-glow)' : 'none',
       }}
     >
-      <div style={{ display: 'grid', gridTemplateColumns: '92px 1fr auto', gap: 28, alignItems: 'start' }}>
-        <div>
-          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 72, lineHeight: 0.85, color: 'var(--rust-400)', letterSpacing: '-0.04em' }}>#{edition}</div>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 500, color: 'var(--fg-muted)', letterSpacing: '.14em', marginTop: 8 }}>{year}</div>
-        </div>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr auto' : '92px 1fr auto', gap: isMobile ? 12 : 28, alignItems: 'start' }}>
+        {!isMobile && (
+          <div>
+            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 72, lineHeight: 0.85, color: 'var(--rust-400)', letterSpacing: '-0.04em' }}>#{edition}</div>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 500, color: 'var(--fg-muted)', letterSpacing: '.14em', marginTop: 8 }}>{year}</div>
+          </div>
+        )}
 
         <div style={{ minWidth: 0 }}>
-          <h3 style={{ fontFamily: 'var(--font-sans)', fontWeight: 700, fontSize: 22, lineHeight: 1.25, margin: '0 0 10px', color: 'var(--fg)', letterSpacing: '-0.01em' }}>{title}</h3>
+          {isMobile && (
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 8 }}>
+              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 36, lineHeight: 1, color: 'var(--rust-400)', letterSpacing: '-0.04em' }}>#{edition}</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 500, color: 'var(--fg-muted)', letterSpacing: '.14em' }}>{year}</span>
+            </div>
+          )}
+          <h3 style={{ fontFamily: 'var(--font-sans)', fontWeight: 700, fontSize: isMobile ? 17 : 22, lineHeight: 1.25, margin: '0 0 10px', color: 'var(--fg)', letterSpacing: '-0.01em' }}>{title}</h3>
           <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap', color: 'var(--fg-muted)', fontSize: 13, fontFamily: 'var(--font-mono)', marginBottom: 14 }}>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
               <Icon name="calendar" size={14} style={{ color: 'var(--rust-400)' }} /> {date} · {time}

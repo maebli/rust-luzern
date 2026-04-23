@@ -1,5 +1,6 @@
 // CommunityRow.jsx
 const CommunityRow = () => {
+  const isMobile = useIsMobile();
   const links = [
     { icon: 'matrix', label: 'Matrix', href: 'https://matrix.to/#/#rust-luzern:matrix.org' },
     { icon: 'meetup', label: 'Meetup', href: 'https://www.meetup.com/rust-luzern/' },
@@ -8,11 +9,11 @@ const CommunityRow = () => {
   ];
   return (
     <section style={{ padding: '32px 0', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
-      <div style={{ maxWidth: 860, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap', justifyContent: 'space-between' }}>
+      <div style={{ maxWidth: 860, margin: '0 auto', padding: '0 24px', display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'center' : 'center', gap: isMobile ? 16 : 24, flexWrap: 'wrap', justifyContent: isMobile ? 'center' : 'space-between' }}>
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '.18em', textTransform: 'uppercase', color: 'var(--fg-muted)' }}>
           Join the community
         </div>
-        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', justifyContent: isMobile ? 'center' : 'flex-start' }}>
           {links.map(l => <CommunityLink key={l.label} {...l} />)}
         </div>
       </div>

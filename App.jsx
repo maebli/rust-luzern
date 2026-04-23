@@ -9,6 +9,7 @@ const MEETUP = 'https://www.meetup.com/rust-luzern/events/';
 
 const App = () => {
   const [hostOpen, setHostOpen] = React.useState(false);
+  const isMobile = useIsMobile();
 
   const upcoming = {
     edition: 4, year: 2026,
@@ -84,16 +85,16 @@ const App = () => {
 
   return (
     <>
-      <Hero onHost={() => setHostOpen(true)} />
+      <Hero onHost={() => setHostOpen(true)} isMobile={isMobile} />
       <section style={{ maxWidth: 960, margin: '0 auto', padding: '24px 24px 48px' }}>
-        <SectionHead eyebrow="Next up" title="Upcoming meetup" />
-        <EventCard {...upcoming} />
+        <SectionHead eyebrow="Next up" title="Upcoming meetup" isMobile={isMobile} />
+        <EventCard {...upcoming} isMobile={isMobile} />
       </section>
       <CommunityRow />
-      <section style={{ maxWidth: 960, margin: '0 auto', padding: '64px 24px' }}>
-        <SectionHead eyebrow="Archive" title="Past talks" />
+      <section style={{ maxWidth: 960, margin: '0 auto', padding: isMobile ? '40px 16px' : '64px 24px' }}>
+        <SectionHead eyebrow="Archive" title="Past talks" isMobile={isMobile} />
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-          {past.map(e => <EventCard key={e.edition} {...e} />)}
+          {past.map(e => <EventCard key={e.edition} {...e} isMobile={isMobile} />)}
         </div>
       </section>
       <Footer />
@@ -102,10 +103,10 @@ const App = () => {
   );
 };
 
-const SectionHead = ({ eyebrow, title }) => (
-  <header style={{ display: 'flex', alignItems: 'baseline', gap: 20, marginBottom: 24, paddingBottom: 16, borderBottom: '1px solid var(--border)' }}>
+const SectionHead = ({ eyebrow, title, isMobile }) => (
+  <header style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'flex-start' : 'baseline', gap: isMobile ? 6 : 20, marginBottom: 24, paddingBottom: 16, borderBottom: '1px solid var(--border)' }}>
     <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '.18em', textTransform: 'uppercase', color: 'var(--rust-400)' }}>{eyebrow}</span>
-    <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 28, letterSpacing: '-0.02em', margin: 0, color: 'var(--fg)' }}>{title}</h2>
+    <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: isMobile ? 22 : 28, letterSpacing: '-0.02em', margin: 0, color: 'var(--fg)' }}>{title}</h2>
   </header>
 );
 

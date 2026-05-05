@@ -24,7 +24,7 @@ const App = () => {
     program: DEFAULT_PROGRAM,
     talks: [
       { speaker: 'Markus Ineichen', speakerUrl: 'https://github.com/mineichen', title: '— Pilatus: a modular, extensible application framework' },
-      { speaker: 'Leonardo Held', title: '— Rust @ Toradex' },
+      { speaker: 'Leonardo Held', title: '— Understanding the Borrow Checker' },
     ],
   };
 

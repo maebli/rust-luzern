@@ -11,24 +11,23 @@ const App = () => {
   const [hostOpen, setHostOpen] = React.useState(false);
   const isMobile = useIsMobile();
 
-  const upcoming = {
-    edition: 4, year: 2026,
-    title: '2026 Rust Talks Luzern #4: Examples from the field @ Toradex',
-    date: 'May 5, 2026', time: '18:30–20:30 CEST',
-    startISO: '2026-05-05T16:30:00Z', endISO: '2026-05-05T18:30:00Z',
-    location: 'HSLU T&A, Technikumsstrasse 21, Horw (Raum C209)',
-    host: 'Toradex', hostUrl: 'https://www.toradex.com/',
-    rsvpUrl: MEETUP,
-    status: 'upcoming',
-    description: 'Real-world Rust use cases hosted by Toradex. English by default, flexible based on attendees.',
-    program: DEFAULT_PROGRAM,
-    talks: [
-      { speaker: 'Markus Ineichen', speakerUrl: 'https://github.com/mineichen', title: '— Pilatus: a modular, extensible application framework' },
-      { speaker: 'Leonardo Held', title: '— Understanding the Borrow Checker' },
-    ],
-  };
+  const upcoming = null;
 
   const past = [
+    {
+      edition: 4, year: 2026,
+      title: '2026 Rust Talks Luzern #4: Examples from the field @ Toradex',
+      date: 'May 5, 2026', time: '18:30–20:30 CEST',
+      startISO: '2026-05-05T16:30:00Z', endISO: '2026-05-05T18:30:00Z',
+      location: 'HSLU T&A, Technikumsstrasse 21, Horw (Raum C209)',
+      host: 'Toradex', hostUrl: 'https://www.toradex.com/',
+      status: 'past',
+      program: DEFAULT_PROGRAM,
+      talks: [
+        { speaker: 'Markus Ineichen', speakerUrl: 'https://github.com/mineichen', title: '— Pilatus: a modular, extensible application framework' },
+        { speaker: 'Leonardo Held', title: '— Understanding the Borrow Checker' },
+      ],
+    },
     {
       edition: 3, year: 2025,
       title: 'Industrial Robotics & Kubernetes',
@@ -86,10 +85,12 @@ const App = () => {
   return (
     <>
       <Hero onHost={() => setHostOpen(true)} isMobile={isMobile} />
-      <section style={{ maxWidth: 960, margin: '0 auto', padding: '24px 24px 48px' }}>
-        <SectionHead eyebrow="Next up" title="Upcoming meetup" isMobile={isMobile} />
-        <EventCard {...upcoming} isMobile={isMobile} />
-      </section>
+      {upcoming && (
+        <section style={{ maxWidth: 960, margin: '0 auto', padding: '24px 24px 48px' }}>
+          <SectionHead eyebrow="Next up" title="Upcoming meetup" isMobile={isMobile} />
+          <EventCard {...upcoming} isMobile={isMobile} />
+        </section>
+      )}
       <CommunityRow />
       <section style={{ maxWidth: 960, margin: '0 auto', padding: isMobile ? '40px 16px' : '64px 24px' }}>
         <SectionHead eyebrow="Archive" title="Past talks" isMobile={isMobile} />
